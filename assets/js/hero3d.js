@@ -68,9 +68,19 @@ function makeBokeh(count = 90) {
     pos[i*3+2] = (Math.random() - 0.5) * 3 - 1.0;
   }
   geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  // sprite redondo suave (gradiente radial no canvas) — pontos viram círculos, não quadrados
+  const cv = document.createElement('canvas'); cv.width = cv.height = 64;
+  const c2 = cv.getContext('2d');
+  const grd = c2.createRadialGradient(32, 32, 0, 32, 32, 32);
+  grd.addColorStop(0, 'rgba(255,255,255,1)');
+  grd.addColorStop(0.35, 'rgba(255,255,255,0.55)');
+  grd.addColorStop(1, 'rgba(255,255,255,0)');
+  c2.fillStyle = grd; c2.fillRect(0, 0, 64, 64);
+  const sprite = new THREE.CanvasTexture(cv);
+  sprite.colorSpace = THREE.SRGBColorSpace;
   const mat = new THREE.PointsMaterial({
-    color: COLOR.goldLight, size: 0.07, sizeAttenuation: true,
-    transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending,
+    color: COLOR.goldLight, size: 0.09, sizeAttenuation: true,
+    map: sprite, transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending,
   });
   const pts = new THREE.Points(geo, mat);
   pts.userData.baseY = pos.slice();
