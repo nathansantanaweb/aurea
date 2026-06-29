@@ -55,6 +55,24 @@ function buildScene(mount) {
   return { renderer, scene, camera, group, key, rim, pmrem };
 }
 
+function makeBokeh(count = 90) {
+  const geo = new THREE.BufferGeometry();
+  const pos = new Float32Array(count * 3);
+  for (let i = 0; i < count; i++) {
+    pos[i*3]   = (Math.random() - 0.5) * 7;
+    pos[i*3+1] = (Math.random() - 0.5) * 5;
+    pos[i*3+2] = (Math.random() - 0.5) * 3 - 1.0;
+  }
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  const mat = new THREE.PointsMaterial({
+    color: COLOR.goldLight, size: 0.07, sizeAttenuation: true,
+    transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending,
+  });
+  const pts = new THREE.Points(geo, mat);
+  pts.userData.baseY = pos.slice();
+  return pts;
+}
+
 let ctx = null;
 
 function setBust(mesh) {
@@ -82,12 +100,31 @@ function startScene(mount, { reduced }) {
   // acende
   requestAnimationFrame(() => hero && hero.classList.add('is-lit'));
 
-  if (reduced) { ctx.renderer.render(ctx.scene, ctx.camera); return; }
+  const bokeh = makeBokeh(); ctx.scene.add(bokeh); ctx.bokeh = bokeh;
+  window.__aureaHero3D.bokeh = bokeh;
+  const targets = [ [ctx.key, 2.6], [ctx.rim, 2.2] ];
+  targets.forEach(([l]) => (l.intensity = 0));
+  const litStart = performance.now();
+
+  if (reduced) {
+    ctx.key.intensity = 2.6; ctx.rim.intensity = 2.2;
+    ctx.renderer.render(ctx.scene, ctx.camera); return;
+  }
 
   const SPIN = 0.18; // rad/s (~10°/s)
   let last = performance.now();
   function loop(now) {
     const dt = Math.min((now - last) / 1000, 0.05); last = now;
+    const k = Math.min((now - litStart) / 1800, 1);      // 0→1 em 1.8s
+    const ease = k * (2 - k);                             // easeOutQuad
+    targets.forEach(([l, max]) => (l.intensity = max * ease));
+    bokeh.material.opacity = 0.55 * ease;
+    const by = bokeh.geometry.getAttribute('position');
+    for (let i = 0; i < by.count; i++) {
+      const y = bokeh.userData.baseY[i*3+1] + Math.sin(now*0.0003 + i) * 0.15;
+      by.setY(i, y);
+    }
+    by.needsUpdate = true;
     ctx.group.rotation.y += SPIN * dt;
     ctx.renderer.render(ctx.scene, ctx.camera);
     ctx._raf = requestAnimationFrame(loop);
