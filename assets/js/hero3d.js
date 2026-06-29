@@ -111,6 +111,28 @@ function startScene(mount, { reduced }) {
     ctx.renderer.render(ctx.scene, ctx.camera); return;
   }
 
+  ctx.tilt = { x: 0, y: 0 };
+  window.__aureaHero3D.tilt = ctx.tilt;
+  const MAXT = 0.18; // rad
+  window.addEventListener('pointermove', (e) => {
+    ctx.tilt.x = ((e.clientY / innerHeight) - 0.5) * MAXT;
+    ctx.tilt.y = ((e.clientX / innerWidth)  - 0.5) * MAXT;
+  }, { passive: true });
+  // giroscópio (iOS exige permissão por gesto; se negar, fica sem parallax — sem erro)
+  function enableGyro() {
+    window.addEventListener('deviceorientation', (e) => {
+      if (e.gamma == null) return;
+      ctx.tilt.y = THREE.MathUtils.clamp(e.gamma / 90, -1, 1) * MAXT;
+      ctx.tilt.x = THREE.MathUtils.clamp((e.beta - 45) / 90, -1, 1) * MAXT;
+    }, { passive: true });
+  }
+  const DOE = window.DeviceOrientationEvent;
+  if (DOE && typeof DOE.requestPermission === 'function') {
+    window.addEventListener('click', function ask() {
+      DOE.requestPermission().then(s => s === 'granted' && enableGyro()).catch(()=>{});
+      window.removeEventListener('click', ask);
+    }, { once: true });
+  } else if (DOE) { enableGyro(); }
   const SPIN = 0.18; // rad/s (~10°/s)
   let last = performance.now();
   function loop(now) {
@@ -125,7 +147,11 @@ function startScene(mount, { reduced }) {
       by.setY(i, y);
     }
     by.needsUpdate = true;
-    ctx.group.rotation.y += SPIN * dt;
+    ctx.group.rotation.x += (ctx.tilt.x - ctx.group.rotation.x) * 0.05;
+    const baseY = ctx.group.rotation.y + SPIN * dt;
+    ctx.group.rotation.y = baseY + (ctx.tilt.y - 0) * 0.0; // spin domina o eixo Y
+    ctx.camera.position.x += ((ctx.tilt.y * 1.2) - ctx.camera.position.x) * 0.05;
+    ctx.camera.lookAt(0, 0.1, 0);
     ctx.renderer.render(ctx.scene, ctx.camera);
     ctx._raf = requestAnimationFrame(loop);
   }
