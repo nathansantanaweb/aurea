@@ -215,7 +215,11 @@ function init() {
   const mount = document.getElementById('hero3d');
   if (!mount) return;
   const nogl = new URLSearchParams(location.search).get('nogl') === '1';
-  if (nogl || !hasWebGL()) return; // fallback <img> permanece visível (sem body.webgl-ok)
+  if (nogl || !hasWebGL()) {        // fallback <img> permanece visível (sem body.webgl-ok)
+    const hero = document.getElementById('topo');
+    requestAnimationFrame(() => hero && hero.classList.add('is-lit')); // revela a fallback-img (remove veil)
+    return;
+  }
   document.body.classList.add('webgl-ok');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   // lazy: inicia após o primeiro paint
