@@ -42,6 +42,7 @@ function buildScene(mount) {
 
   const pmrem = new THREE.PMREMGenerator(renderer);
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  pmrem.dispose();
 
   const key  = new THREE.DirectionalLight(COLOR.goldLight, 3.0); key.position.set(2.6, 2.2, 2.2);
   const rim  = new THREE.DirectionalLight(COLOR.gold, 2.8);      rim.position.set(-3.0, 1.2, -1.6);
@@ -84,7 +85,7 @@ function setBust(mesh) {
 
 function updateRig() {
   if (!ctx || !ctx.rig) return;
-  if (innerWidth >= 900) {
+  if (innerWidth > 880) {
     ctx.rig.position.x = 1.1;
     ctx.rig.position.y = 0;
     ctx.group.scale.setScalar(1.0);
@@ -101,6 +102,7 @@ function onResize() {
   if (!m) return;
   ctx.camera.aspect = m.clientWidth / m.clientHeight;
   ctx.camera.updateProjectionMatrix();
+  ctx.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   ctx.renderer.setSize(m.clientWidth, m.clientHeight);
   updateRig();
   ctx.renderer.render(ctx.scene, ctx.camera);
@@ -136,7 +138,6 @@ function startScene(mount, { reduced }) {
   requestAnimationFrame(() => hero && hero.classList.add('is-lit'));
 
   const bokeh = makeBokeh(); ctx.scene.add(bokeh); ctx.bokeh = bokeh;
-  window.__aureaHero3D.bokeh = bokeh;
   const targets = [ [ctx.key, 3.0], [ctx.rim, 2.8] ];
   targets.forEach(([l]) => (l.intensity = 0));
   const litStart = performance.now();
@@ -147,7 +148,6 @@ function startScene(mount, { reduced }) {
   }
 
   ctx.tilt = { x: 0, y: 0 };
-  window.__aureaHero3D.tilt = ctx.tilt;
   const MAXT = 0.18; // rad
   window.addEventListener('pointermove', (e) => {
     ctx.tilt.x = ((e.clientY / innerHeight) - 0.5) * MAXT;
@@ -165,7 +165,6 @@ function startScene(mount, { reduced }) {
   if (DOE && typeof DOE.requestPermission === 'function') {
     window.addEventListener('click', function ask() {
       DOE.requestPermission().then(s => s === 'granted' && enableGyro()).catch(()=>{});
-      window.removeEventListener('click', ask);
     }, { once: true });
   } else if (DOE) { enableGyro(); }
   const SPIN = 0.18; // rad/s (~10°/s)
@@ -184,7 +183,7 @@ function startScene(mount, { reduced }) {
     by.needsUpdate = true;
     ctx.group.rotation.x += (ctx.tilt.x - ctx.group.rotation.x) * 0.05;
     const baseY = ctx.group.rotation.y + SPIN * dt;
-    ctx.group.rotation.y = baseY + (ctx.tilt.y - 0) * 0.0; // spin domina o eixo Y
+    ctx.group.rotation.y = baseY; // spin domina o eixo Y
     ctx.camera.position.x += ((ctx.tilt.y * 1.2) - ctx.camera.position.x) * 0.05;
     ctx.camera.lookAt(0, 0.1, 0);
     ctx.renderer.render(ctx.scene, ctx.camera);

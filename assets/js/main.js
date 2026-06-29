@@ -3,6 +3,15 @@
 (function(){
   "use strict";
 
+  // Safety net: if the 3D module never ran (old browser w/o import maps, or a module error),
+  // reveal the static fallback so the hero is never a blank dark rectangle.
+  setTimeout(function () {
+    var hero = document.getElementById('topo');
+    if (hero && !hero.classList.contains('is-lit') && !document.querySelector('#hero3d canvas')) {
+      hero.classList.add('is-lit');
+    }
+  }, 1200);
+
   /* Header condensa ao rolar */
   var cab = document.getElementById('cab');
   function onScroll(){ if(cab) cab.classList.toggle('cab--solid', window.scrollY > 24); }
