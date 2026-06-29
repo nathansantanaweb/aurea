@@ -128,6 +128,7 @@ function startScene(mount, { reduced }) {
     root.position.sub(center.multiplyScalar(s));
     root.position.y += 0.1;
     setBust(root);
+    if (!ctx._raf) ctx.renderer.render(ctx.scene, ctx.camera);
   }, undefined, (err) => { console.warn('glb load falhou, mantendo placeholder', err); });
 
   const hero = document.getElementById('topo');
