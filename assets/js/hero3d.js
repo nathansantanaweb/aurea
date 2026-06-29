@@ -2,15 +2,15 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
-const COLOR = { marble:0xF0E6D2, gold:0xC8A24C, goldLight:0xE3C982, fill:0xBFD0FF };
+const COLOR = { marble:0xF2E8D6, gold:0xC8A24C, goldLight:0xE3C982, fill:0xBFD0FF };
 
 const isMobile = matchMedia('(pointer:coarse)').matches || innerWidth <= 880;
 
 export function makeBustMaterial() {
   return new THREE.MeshPhysicalMaterial({
-    color: COLOR.marble, roughness: 0.42, metalness: 0.0,
-    clearcoat: 0.5, clearcoatRoughness: 0.5, sheen: 0.5, sheenColor: 0xfff4dc,
-    envMapIntensity: 0.7,
+    color: COLOR.marble, roughness: 0.30, metalness: 0.0,
+    clearcoat: 0.6, clearcoatRoughness: 0.4, sheen: 0.6, sheenColor: new THREE.Color(0xF8E8C8),
+    envMapIntensity: 0.9,
   });
 }
 
@@ -35,7 +35,7 @@ function buildScene(mount) {
   renderer.setSize(mount.clientWidth, mount.clientHeight);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.15;
+  renderer.toneMappingExposure = 1.12;
   mount.appendChild(renderer.domElement);
 
   const scene = new THREE.Scene();
@@ -46,10 +46,10 @@ function buildScene(mount) {
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
   pmrem.dispose();
 
-  const key  = new THREE.DirectionalLight(COLOR.goldLight, 3.0); key.position.set(2.6, 2.2, 2.2);
-  const rim  = new THREE.DirectionalLight(COLOR.gold, 2.8);      rim.position.set(-3.0, 1.2, -1.6);
-  const fill = new THREE.DirectionalLight(COLOR.fill, 0.35);     fill.position.set(-1.6,-0.6, 2.6);
-  const amb  = new THREE.AmbientLight(0x4a3d33, 0.45);
+  const key  = new THREE.DirectionalLight(COLOR.goldLight, 3.2); key.position.set(2.6, 2.2, 2.2);
+  const rim  = new THREE.DirectionalLight(COLOR.gold, 3.2);      rim.position.set(-3.0, 1.2, -1.6);
+  const fill = new THREE.DirectionalLight(COLOR.fill, 0.30);     fill.position.set(-1.6,-0.6, 2.6);
+  const amb  = new THREE.AmbientLight(0x4a3d33, 0.35);
   scene.add(key, rim, fill, amb);
 
   const rig = new THREE.Group(); scene.add(rig);
@@ -122,7 +122,7 @@ function startScene(mount, { reduced }) {
   loader.load('assets/models/busto.glb', (gltf) => {
     const root = gltf.scene;
     const mat = makeBustMaterial();
-    root.traverse(o => { if (o.isMesh) { o.material = mat; o.castShadow = false; } });
+    root.traverse(o => { if (o.isMesh) { o.geometry.computeVertexNormals(); o.material = mat; o.castShadow = false; } });
     // enquadrar: centralizar bbox e escalar pra ~2.2 de altura
     const box = new THREE.Box3().setFromObject(root);
     const size = box.getSize(new THREE.Vector3());
@@ -169,10 +169,10 @@ function startScene(mount, { reduced }) {
       DOE.requestPermission().then(s => s === 'granted' && enableGyro()).catch(()=>{});
     }, { once: true });
   } else if (DOE) { enableGyro(); }
-  const SPIN = 0.18; // rad/s (~10°/s)
-  let last = performance.now();
+  const SWAY_BASE = 0.08;    // rad — face slightly turned, reads frontal
+  const SWAY_AMP  = 0.45;    // rad (~26°) — max sway left/right
+  const SWAY_SPD  = 0.00035; // rad/ms — very slow, elegant
   function loop(now) {
-    const dt = Math.min((now - last) / 1000, 0.05); last = now;
     const k = Math.min((now - litStart) / 1800, 1);      // 0→1 em 1.8s
     const ease = k * (2 - k);                             // easeOutQuad
     targets.forEach(([l, max]) => (l.intensity = max * ease));
@@ -184,8 +184,7 @@ function startScene(mount, { reduced }) {
     }
     by.needsUpdate = true;
     ctx.group.rotation.x += (ctx.tilt.x - ctx.group.rotation.x) * 0.05;
-    const baseY = ctx.group.rotation.y + SPIN * dt;
-    ctx.group.rotation.y = baseY; // spin domina o eixo Y
+    ctx.group.rotation.y = SWAY_BASE + Math.sin(now * SWAY_SPD) * SWAY_AMP; // sway — face sempre visível
     ctx.camera.position.x += ((ctx.tilt.y * 1.2) - ctx.camera.position.x) * 0.05;
     ctx.camera.lookAt(0, 0.1, 0);
     ctx.renderer.render(ctx.scene, ctx.camera);
@@ -194,7 +193,7 @@ function startScene(mount, { reduced }) {
   ctx._raf = requestAnimationFrame(loop);
 
   function pause(){ if (ctx._raf){ cancelAnimationFrame(ctx._raf); ctx._raf = null; } }
-  function resume(){ if (!ctx._raf && !document.hidden && ctx._visible){ last = performance.now(); ctx._raf = requestAnimationFrame(loop); } }
+  function resume(){ if (!ctx._raf && !document.hidden && ctx._visible){ ctx._raf = requestAnimationFrame(loop); } }
   ctx.pause = pause; ctx.resume = resume; ctx._visible = true;
 
   const io = new IntersectionObserver((es) => {

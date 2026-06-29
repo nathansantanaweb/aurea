@@ -101,7 +101,7 @@ body.webgl-ok .hero__fallback{display:none}
 }
 
 /* ---- Faixa de confiança ---- */
-.confianca{background:var(--cafe); color:var(--osso); padding:36px 0}
+.confianca{background:var(--cafe); color:var(--osso); padding:26px 0}
 .confianca__grid{display:grid; grid-template-columns:repeat(4,1fr); gap:24px; text-align:center}
 .confianca .num{display:block; font-family:var(--fonte-display); font-size:2.4rem; line-height:1; color:var(--ouro-claro)}
 .confianca .rot{display:block; margin-top:6px; font-size:.82rem; letter-spacing:.03em; color:rgba(251,247,241,.82)}
@@ -120,7 +120,7 @@ body.webgl-ok .hero__fallback{display:none}
 @media(max-width:680px){ .selos__inner{flex-direction:column; gap:14px} }
 
 /* ---- Rodapé ---- */
-.rodape{background:var(--osso); border-top:1px solid var(--linha); padding:54px 0 30px}
+.rodape{background:var(--osso); border-top:1px solid var(--linha); padding:40px 0 22px}
 .rodape__grid{display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap; padding-bottom:26px; border-bottom:1px solid var(--linha)}
 .rodape__marca p{margin:.3em 0 0; color:var(--cafe-suave); font-size:.92rem}
 .rodape__legal{padding-top:18px}
@@ -132,8 +132,8 @@ body.webgl-ok .hero__fallback{display:none}
 .zap svg{width:30px; height:30px}
 
 /* ---- Seções / cards ---- */
-.sec{padding:clamp(76px,10vw,134px) 0; position:relative}
-.sec__head{max-width:680px; margin-bottom:clamp(38px,5.5vw,60px)}
+.sec{padding:clamp(56px,8vw,102px) 0; position:relative}
+.sec__head{max-width:680px; margin-bottom:clamp(28px,4vw,48px)}
 .sec__title{font-size:clamp(2rem,4.4vw,3.2rem); margin:.18em 0 .45em}
 .sec__intro{color:var(--cafe-suave); font-size:1.14rem; line-height:1.6; max-width:58ch; margin:0}
 .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:22px}
@@ -165,7 +165,7 @@ body.webgl-ok .hero__fallback{display:none}
 .ba__nota{margin-top:16px}
 
 /* ---- Mini-galeria de resultados (antes/depois ilustrativo) ---- */
-.bagal{margin-top:38px; display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
+.bagal{margin-top:28px; display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
 .bagal__par{position:relative; margin:0; border-radius:var(--r-sm); overflow:hidden; box-shadow:var(--sombra-sm); aspect-ratio:4/5; border:1px solid var(--linha)}
 .bagal__par .img{position:absolute; inset:0}
 .bagal__par .img img{width:100%; height:100%; object-fit:cover; display:block}
@@ -220,7 +220,7 @@ body.webgl-ok .hero__fallback{display:none}
 /* ---- Depoimentos ---- */
 .depoimentos{background:var(--osso)}
 .deps{display:grid; grid-template-columns:repeat(3,1fr); gap:22px}
-.dep{margin:0; background:var(--branco); border:1px solid var(--linha); border-radius:var(--r); padding:30px 28px; display:flex; flex-direction:column; gap:14px}
+.dep{margin:0; background:var(--branco); border:1px solid var(--linha); border-radius:var(--r); padding:24px 22px; display:flex; flex-direction:column; gap:12px}
 .dep__stars{color:var(--ouro); letter-spacing:3px; font-size:1rem}
 .dep blockquote{margin:0; font-family:var(--fonte-display); font-style:italic; font-size:1.32rem; line-height:1.45; color:var(--cafe)}
 .dep figcaption{color:var(--ouro-escuro); font-size:.82rem; letter-spacing:.08em; text-transform:uppercase; margin-top:auto}
@@ -234,7 +234,7 @@ body.webgl-ok .hero__fallback{display:none}
 .insta__tile::after{content:""; position:absolute; inset:0; background:linear-gradient(160deg, rgba(227,201,130,0), rgba(200,162,76,.20)); opacity:0; transition:opacity var(--t)}
 .insta__tile:hover::after{opacity:1}
 .insta__tile:hover svg{transform:scale(1.14); opacity:.85}
-.insta__cta{margin-top:28px}
+.insta__cta{margin-top:20px}
 @media(max-width:900px){ .insta__grid{grid-template-columns:repeat(3,1fr)} }
 @media(max-width:420px){ .insta__grid{grid-template-columns:repeat(2,1fr)} }
 
