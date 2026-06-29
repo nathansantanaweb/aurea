@@ -93,7 +93,8 @@ function onResize() {
 
 function startScene(mount, { reduced }) {
   ctx = buildScene(mount);
-  window.__aureaHero3D = { ...ctx, setBust };
+  ctx.setBust = setBust;
+  window.__aureaHero3D = ctx;
   window.addEventListener('resize', onResize, { passive:true });
 
   const hero = document.getElementById('topo');
@@ -156,6 +157,18 @@ function startScene(mount, { reduced }) {
     ctx._raf = requestAnimationFrame(loop);
   }
   ctx._raf = requestAnimationFrame(loop);
+
+  function pause(){ if (ctx._raf){ cancelAnimationFrame(ctx._raf); ctx._raf = null; } }
+  function resume(){ if (!ctx._raf && !document.hidden && ctx._visible){ last = performance.now(); ctx._raf = requestAnimationFrame(loop); } }
+  ctx.pause = pause; ctx.resume = resume; ctx._visible = true;
+
+  const io = new IntersectionObserver((es) => {
+    ctx._visible = es[0].isIntersecting;
+    ctx._visible ? resume() : pause();
+  }, { threshold: 0.01 });
+  io.observe(mount);
+
+  document.addEventListener('visibilitychange', () => document.hidden ? pause() : resume());
 }
 
 function hasWebGL() {
