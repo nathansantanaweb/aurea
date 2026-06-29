@@ -4,6 +4,8 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const COLOR = { marble:0xF0E6D2, gold:0xC8A24C, goldLight:0xE3C982, fill:0xBFD0FF };
 
+const isMobile = matchMedia('(pointer:coarse)').matches || innerWidth <= 880;
+
 export function makeBustMaterial() {
   return new THREE.MeshPhysicalMaterial({
     color: COLOR.marble, roughness: 0.42, metalness: 0.0,
@@ -29,7 +31,7 @@ function makePlaceholderBust() {
 
 function buildScene(mount) {
   const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true, powerPreference:'high-performance' });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2));
   renderer.setSize(mount.clientWidth, mount.clientHeight);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -91,8 +93,8 @@ function updateRig() {
     ctx.group.scale.setScalar(1.0);
   } else {
     ctx.rig.position.x = 0;
-    ctx.rig.position.y = -1.3;
-    ctx.group.scale.setScalar(0.75);
+    ctx.rig.position.y = -1.05;
+    ctx.group.scale.setScalar(0.9);
   }
 }
 
@@ -102,7 +104,7 @@ function onResize() {
   if (!m) return;
   ctx.camera.aspect = m.clientWidth / m.clientHeight;
   ctx.camera.updateProjectionMatrix();
-  ctx.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  ctx.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2));
   ctx.renderer.setSize(m.clientWidth, m.clientHeight);
   updateRig();
   ctx.renderer.render(ctx.scene, ctx.camera);
@@ -137,7 +139,7 @@ function startScene(mount, { reduced }) {
   // acende
   requestAnimationFrame(() => hero && hero.classList.add('is-lit'));
 
-  const bokeh = makeBokeh(); ctx.scene.add(bokeh); ctx.bokeh = bokeh;
+  const bokeh = makeBokeh(isMobile ? 40 : 90); ctx.scene.add(bokeh); ctx.bokeh = bokeh;
   const targets = [ [ctx.key, 3.0], [ctx.rim, 2.8] ];
   targets.forEach(([l]) => (l.intensity = 0));
   const litStart = performance.now();

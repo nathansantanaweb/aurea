@@ -91,6 +91,13 @@ body.webgl-ok .hero__fallback{display:none}
   z-index:2; color:rgba(251,247,241,.7); font-size:12px; letter-spacing:.18em; text-transform:uppercase}
 @media (prefers-reduced-motion: reduce){ .hero__veil{transition:none} }
 
+/* ---- Hero mobile — texto no topo, busto abaixo ---- */
+@media (max-width:880px){
+  .hero--3d{align-items:flex-start}
+  .hero__inner{padding-top:10vh}
+  .hero__fallback{object-position:72% 40%}
+}
+
 /* ---- Faixa de confiança ---- */
 .confianca{background:var(--cafe); color:var(--osso); padding:36px 0}
 .confianca__grid{display:grid; grid-template-columns:repeat(4,1fr); gap:24px; text-align:center}
