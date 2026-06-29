@@ -97,6 +97,23 @@ function startScene(mount, { reduced }) {
   window.__aureaHero3D = ctx;
   window.addEventListener('resize', onResize, { passive:true });
 
+  // Carregar busto real (CC0); placeholder permanece até o glb chegar
+  const loader = new GLTFLoader();
+  loader.load('assets/models/busto.glb', (gltf) => {
+    const root = gltf.scene;
+    const mat = makeBustMaterial();
+    root.traverse(o => { if (o.isMesh) { o.material = mat; o.castShadow = false; } });
+    // enquadrar: centralizar bbox e escalar pra ~2.2 de altura
+    const box = new THREE.Box3().setFromObject(root);
+    const size = box.getSize(new THREE.Vector3());
+    const center = box.getCenter(new THREE.Vector3());
+    const s = 2.2 / (size.y || 1);
+    root.scale.setScalar(s);
+    root.position.sub(center.multiplyScalar(s));
+    root.position.y += 0.1;
+    setBust(root);
+  }, undefined, (err) => { console.warn('glb load falhou, mantendo placeholder', err); });
+
   const hero = document.getElementById('topo');
   // acende
   requestAnimationFrame(() => hero && hero.classList.add('is-lit'));
