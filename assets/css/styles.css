@@ -2,7 +2,7 @@
    ÁUREA — estilos
    ===================================================================== */
 *,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth; overflow-x:hidden}
 body{
   margin:0; background:var(--champagne); color:var(--cafe);
   font-family:var(--fonte-texto); font-size:17px; line-height:1.65;
@@ -64,23 +64,30 @@ main{counter-reset:secn}
 .nav-toggle svg{display:block}
 
 /* ---- Hero ---- */
-.hero{position:relative; min-height:100svh; display:flex; align-items:center; overflow:hidden}
-.hero__media{position:absolute; inset:0; z-index:0}
-.hero__img{
-  width:100%; height:100%; object-fit:cover; object-position:50% 38%;
-  filter:brightness(.82) saturate(.74) contrast(.97); transform:scaleX(-1) scale(1.06);
-  animation:acende 2.3s cubic-bezier(.2,.7,.2,1) .15s forwards;
+.hero--3d{
+  position:relative; min-height:100svh; display:flex; align-items:center;
+  overflow:hidden;
+  background:linear-gradient(177deg,#241c16 0%,#3f342b 24%,#9c8369 58%,var(--champagne) 86%);
 }
-@keyframes acende{to{filter:brightness(1.03) saturate(1.06) contrast(1); transform:scaleX(-1) scale(1)}}
-.hero__scrim{position:absolute; inset:0; background:
-  linear-gradient(100deg, var(--champagne) 0%, rgba(246,239,231,.9) 22%, rgba(246,239,231,.45) 47%, rgba(246,239,231,0) 70%),
-  linear-gradient(0deg, rgba(246,239,231,.4), rgba(246,239,231,0) 32%);}
-.hero__glow{position:absolute; inset:0; pointer-events:none; mix-blend-mode:screen}
-.hero__inner{position:relative; z-index:3; max-width:620px; padding-block:120px 60px; will-change:transform,opacity}
+.hero__media{position:absolute; inset:0; z-index:0}
+.hero3d{position:absolute; inset:0}
+.hero3d canvas{display:block; width:100%!important; height:100%!important}
+.hero__fallback{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:60% 40%}
+body.webgl-ok .hero__fallback{display:none}
+.hero__veil{position:absolute; inset:0; background:#241c16; opacity:1; pointer-events:none;
+  transition:opacity 1.6s ease}
+.hero.is-lit .hero__veil{opacity:0}
+.hero__inner{position:relative; z-index:2; color:var(--osso); max-width:620px}
+.hero--3d .kicker{color:var(--ouro-claro)}
+.hero--3d .hero__title{color:var(--osso)}
+.hero--3d .hero__title em{color:var(--ouro-claro)}
+.hero--3d .hero__lede{color:rgba(251,247,241,.86)}
 .hero__title{font-size:clamp(2.7rem,6.4vw,5rem); margin:.18em 0 .35em; letter-spacing:.4px}
 .hero__lede{font-size:clamp(1.12rem,1.7vw,1.26rem); line-height:1.6; color:var(--cafe-suave); max-width:46ch; margin:0 0 2em}
 .hero__cta{display:flex; flex-wrap:wrap; gap:14px}
-.hero__scrolldown{position:absolute; left:50%; bottom:24px; transform:translateX(-50%); z-index:3; color:var(--ouro-escuro); font-size:.7rem; letter-spacing:.25em; text-transform:uppercase; opacity:.85}
+.hero__scrolldown{position:absolute; left:50%; bottom:22px; transform:translateX(-50%);
+  z-index:2; color:rgba(251,247,241,.7); font-size:12px; letter-spacing:.18em; text-transform:uppercase}
+@media (prefers-reduced-motion: reduce){ .hero__veil{transition:none} }
 
 /* ---- Faixa de confiança ---- */
 .confianca{background:var(--cafe); color:var(--osso); padding:36px 0}
@@ -271,7 +278,6 @@ main{counter-reset:secn}
   .nav-toggle{display:inline-flex; z-index:61}
   .confianca__grid{grid-template-columns:repeat(2,1fr); gap:24px 12px}
   .confianca__grid>div+div::before{display:none}
-  .hero__inner{padding-block:140px 90px}
 }
 @media (max-width:480px){
   body{font-size:16px}
@@ -282,7 +288,5 @@ main{counter-reset:secn}
 /* ---- Reduced motion ---- */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .hero__img{animation:none; filter:none; transform:scaleX(-1)}
-  .hero__inner{transform:none !important; opacity:1 !important}
   .reveal{opacity:1; transform:none; transition:none}
 }
