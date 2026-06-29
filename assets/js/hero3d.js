@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
-const COLOR = { marble:0xF2ECE2, gold:0xC8A24C, goldLight:0xE3C982, fill:0xBFD0FF };
+const COLOR = { marble:0xF0E6D2, gold:0xC8A24C, goldLight:0xE3C982, fill:0xBFD0FF };
 
 export function makeBustMaterial() {
   return new THREE.MeshPhysicalMaterial({
@@ -33,7 +33,7 @@ function buildScene(mount) {
   renderer.setSize(mount.clientWidth, mount.clientHeight);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.05;
+  renderer.toneMappingExposure = 1.15;
   mount.appendChild(renderer.domElement);
 
   const scene = new THREE.Scene();
@@ -43,16 +43,17 @@ function buildScene(mount) {
   const pmrem = new THREE.PMREMGenerator(renderer);
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
 
-  const key  = new THREE.DirectionalLight(COLOR.goldLight, 2.6); key.position.set(2.6, 2.2, 2.2);
-  const rim  = new THREE.DirectionalLight(COLOR.gold, 2.2);      rim.position.set(-3.0, 1.2, -1.6);
+  const key  = new THREE.DirectionalLight(COLOR.goldLight, 3.0); key.position.set(2.6, 2.2, 2.2);
+  const rim  = new THREE.DirectionalLight(COLOR.gold, 2.8);      rim.position.set(-3.0, 1.2, -1.6);
   const fill = new THREE.DirectionalLight(COLOR.fill, 0.35);     fill.position.set(-1.6,-0.6, 2.6);
   const amb  = new THREE.AmbientLight(0x4a3d33, 0.45);
   scene.add(key, rim, fill, amb);
 
-  const group = new THREE.Group(); scene.add(group);
+  const rig = new THREE.Group(); scene.add(rig);
+  const group = new THREE.Group(); rig.add(group);
   const bust = makePlaceholderBust(); group.add(bust);
 
-  return { renderer, scene, camera, group, key, rim, pmrem };
+  return { renderer, scene, camera, group, rig, key, rim, pmrem };
 }
 
 function makeBokeh(count = 90) {
@@ -81,6 +82,19 @@ function setBust(mesh) {
   ctx.group.add(mesh);
 }
 
+function updateRig() {
+  if (!ctx || !ctx.rig) return;
+  if (innerWidth >= 900) {
+    ctx.rig.position.x = 1.1;
+    ctx.rig.position.y = 0;
+    ctx.group.scale.setScalar(1.0);
+  } else {
+    ctx.rig.position.x = 0;
+    ctx.rig.position.y = -1.3;
+    ctx.group.scale.setScalar(0.75);
+  }
+}
+
 function onResize() {
   if (!ctx) return;
   const m = ctx.renderer.domElement.parentElement;
@@ -88,6 +102,7 @@ function onResize() {
   ctx.camera.aspect = m.clientWidth / m.clientHeight;
   ctx.camera.updateProjectionMatrix();
   ctx.renderer.setSize(m.clientWidth, m.clientHeight);
+  updateRig();
   ctx.renderer.render(ctx.scene, ctx.camera);
 }
 
@@ -95,6 +110,7 @@ function startScene(mount, { reduced }) {
   ctx = buildScene(mount);
   ctx.setBust = setBust;
   window.__aureaHero3D = ctx;
+  updateRig();
   window.addEventListener('resize', onResize, { passive:true });
 
   // Carregar busto real (CC0); placeholder permanece até o glb chegar
@@ -120,12 +136,12 @@ function startScene(mount, { reduced }) {
 
   const bokeh = makeBokeh(); ctx.scene.add(bokeh); ctx.bokeh = bokeh;
   window.__aureaHero3D.bokeh = bokeh;
-  const targets = [ [ctx.key, 2.6], [ctx.rim, 2.2] ];
+  const targets = [ [ctx.key, 3.0], [ctx.rim, 2.8] ];
   targets.forEach(([l]) => (l.intensity = 0));
   const litStart = performance.now();
 
   if (reduced) {
-    ctx.key.intensity = 2.6; ctx.rim.intensity = 2.2;
+    ctx.key.intensity = 3.0; ctx.rim.intensity = 2.8;
     ctx.renderer.render(ctx.scene, ctx.camera); return;
   }
 
