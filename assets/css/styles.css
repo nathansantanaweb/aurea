@@ -74,6 +74,8 @@ body.webgl-ok .hero__fallback{display:none}
 .hero--3d .hero__title{color:var(--osso)}
 .hero--3d .hero__title em{color:var(--ouro-claro)}
 .hero--3d .hero__lede{color:rgba(251,247,241,.86)}
+/* scrim de legibilidade do hero: escuro do lado do texto, transparente do lado do busto */
+.hero__media::after{content:""; position:absolute; inset:0; z-index:1; pointer-events:none; background:linear-gradient(98deg, rgba(36,28,22,.85) 0%, rgba(36,28,22,.6) 26%, rgba(36,28,22,.2) 46%, rgba(36,28,22,0) 62%)}
 .hero--3d .btn--ghost{color:var(--osso); border-color:rgba(251,247,241,.35)}
 .hero--3d .btn--ghost:hover{border-color:var(--ouro-claro); color:var(--ouro-claro)}
 .hero__title{font-size:clamp(2.7rem,6.4vw,5rem); margin:.18em 0 .35em; letter-spacing:.4px}
@@ -90,6 +92,7 @@ body.webgl-ok .hero__fallback{display:none}
   .hero__fallback{object-position:72% 40%}
   /* botão ghost legível sobre o mármore claro do busto (glass sutil) */
   .hero--3d .btn--ghost{background:rgba(36,28,22,.34); -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px); border-color:rgba(251,247,241,.5)}
+  .hero__media::after{background:linear-gradient(180deg, rgba(36,28,22,.82) 0%, rgba(36,28,22,.58) 34%, rgba(36,28,22,.26) 52%, rgba(36,28,22,0) 66%)}
 }
 
 /* ---- Faixa de confiança ---- */
@@ -286,15 +289,6 @@ body.webgl-ok .hero__fallback{display:none}
 }
 
 /* ---- Urgência / oferta (gatilho evergreen) ---- */
-.hero__urgencia{
-  margin-top:13px; font-size:.82rem; letter-spacing:.1em; text-transform:uppercase;
-  color:var(--ouro-claro); display:flex; align-items:center; gap:8px; opacity:.9;
-  text-shadow:0 1px 8px rgba(36,28,22,.7);
-}
-.hero__urgencia::before{
-  content:""; display:inline-block; width:6px; height:6px; border-radius:50%;
-  background:var(--ouro-claro); flex:none; box-shadow:0 0 6px var(--ouro-claro);
-}
 .contato__urgencia{
   display:block; margin-top:13px; font-size:.82rem; letter-spacing:.1em;
   text-transform:uppercase; color:var(--ouro-escuro);
