@@ -1,0 +1,10 @@
+# scratch do fluxo de subagentes (ledger, briefs, diffs)
+.superpowers/
+
+# temporários do preparo do modelo 3D
+tmp.glb
+tmp2.glb
+
+# OS
+Thumbs.db
+.DS_Store
