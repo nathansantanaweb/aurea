@@ -156,7 +156,8 @@ body.webgl-ok .hero__fallback{display:none}
 .ba__img{position:absolute; inset:0}
 .ba__img img{width:100%; height:100%; object-fit:cover; display:block}
 .ba__antes{clip-path:inset(0 calc(100% - var(--pos)) 0 0)}
-.ba__antes img{filter:brightness(.84) saturate(.55) contrast(.96) grayscale(.12)}
+.ba__antes img{filter:saturate(.55) brightness(.9) contrast(.96)}
+.ba__depois img{filter:saturate(1.12) brightness(1.07) contrast(1.02)}
 .ba__handle{position:absolute; top:0; bottom:0; left:var(--pos); width:2px; background:var(--osso); transform:translateX(-1px); pointer-events:none}
 .ba__knob{position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:44px; height:44px; border-radius:50%; background:var(--osso); color:var(--ouro-escuro); display:grid; place-items:center; font-size:1rem; box-shadow:var(--sombra-sm)}
 .ba__range{position:absolute; inset:0; width:100%; height:100%; margin:0; opacity:0; pointer-events:none}
@@ -170,7 +171,8 @@ body.webgl-ok .hero__fallback{display:none}
 .bagal__par .img{position:absolute; inset:0}
 .bagal__par .img img{width:100%; height:100%; object-fit:cover; display:block}
 .bagal__par .antes{clip-path:inset(0 50% 0 0)}
-.bagal__par .antes img{filter:brightness(.82) saturate(.5) contrast(.97) grayscale(.12)}
+.bagal__par .antes img{filter:saturate(.5) brightness(.9) contrast(.96)}
+.bagal__par .depois img{filter:saturate(1.12) brightness(1.07) contrast(1.02)}
 .bagal__par .split{position:absolute; top:0; bottom:0; left:50%; width:2px; background:var(--osso); transform:translateX(-1px)}
 .bagal__tag{position:absolute; bottom:10px; font-size:.6rem; letter-spacing:.12em; text-transform:uppercase; padding:4px 9px; border-radius:999px; background:rgba(43,34,28,.55); color:#fff; backdrop-filter:blur(3px)}
 .bagal__tag--a{left:10px} .bagal__tag--d{right:10px}
@@ -294,6 +296,26 @@ body.webgl-ok .hero__fallback{display:none}
   body{font-size:16px}
   .hero__cta{flex-direction:column; align-items:stretch}
   .btn{justify-content:center}
+}
+
+/* ---- Urgência / oferta (gatilho evergreen) ---- */
+.hero__urgencia{
+  margin-top:13px; font-size:.82rem; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--ouro-claro); display:flex; align-items:center; gap:8px; opacity:.9;
+  text-shadow:0 1px 8px rgba(36,28,22,.7);
+}
+.hero__urgencia::before{
+  content:""; display:inline-block; width:6px; height:6px; border-radius:50%;
+  background:var(--ouro-claro); flex:none; box-shadow:0 0 6px var(--ouro-claro);
+}
+.contato__urgencia{
+  display:block; margin-top:13px; font-size:.82rem; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--ouro-escuro);
+  display:flex; align-items:center; gap:8px;
+}
+.contato__urgencia::before{
+  content:""; display:inline-block; width:6px; height:6px; border-radius:50%;
+  background:var(--ouro); flex:none;
 }
 
 /* ---- Reduced motion ---- */
