@@ -12,14 +12,7 @@ img{max-width:100%; display:block}
 a{color:inherit; text-decoration:none}
 .wrap{width:100%; max-width:var(--max); margin-inline:auto; padding-inline:clamp(20px,5vw,40px)}
 
-/* ---- Grão de filme (textura editorial sutil; barato: sem mix-blend, composição estática) ---- */
-body::after{
-  content:""; position:fixed; inset:0; z-index:1; pointer-events:none;
-  opacity:.04; will-change:transform;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
-  background-size:200px 200px;
-}
-@media (prefers-reduced-motion:reduce){ body::after{display:none} }
+/* ---- Grão de filme: removido (superfície limpa) ---- */
 
 /* ---- Tipo ---- */
 h1,h2,h3{font-family:var(--fonte-display); font-weight:600; line-height:1.06; margin:0; color:var(--cafe)}
@@ -29,7 +22,7 @@ em{font-style:italic; color:var(--ouro-escuro)}
 /* ---- Numeração editorial das seções (01 · ) ---- */
 main{counter-reset:secn}
 .sec .kicker{counter-increment:secn}
-.sec .kicker::before{content:counter(secn,decimal-leading-zero) "\00a0\00a0·\00a0\00a0"; color:var(--ouro)}
+.sec .kicker::before{content:counter(secn,decimal-leading-zero) "\00a0\00a0·\00a0\00a0"; color:var(--cafe-suave); font-weight:400}
 
 /* ---- Botões ---- */
 .btn{
@@ -43,8 +36,7 @@ main{counter-reset:secn}
 }
 .btn:hover{transform:translateY(-2px)}
 .btn--ouro{background:linear-gradient(135deg,var(--ouro-claro),var(--ouro)); color:#2A2014}
-.btn--ouro::after{content:""; position:absolute; top:0; left:-140%; width:55%; height:100%; transform:skewX(-18deg); background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent); transition:left .6s cubic-bezier(.2,.7,.2,1); pointer-events:none}
-.btn--ouro:hover::after{left:150%}
+/* btn--ouro shine-sweep removido — hover leve via transform no .btn base */
 .btn--ghost{background:transparent; color:var(--cafe); border-color:var(--linha); box-shadow:none}
 .btn--ghost:hover{border-color:var(--ouro); color:var(--ouro-escuro)}
 .btn--ghost::after{display:none}
@@ -106,10 +98,10 @@ body.webgl-ok .hero__fallback{display:none}
 .confianca .num{display:block; font-family:var(--fonte-display); font-size:2.4rem; line-height:1; color:var(--ouro-claro)}
 .confianca .rot{display:block; margin-top:6px; font-size:.82rem; letter-spacing:.03em; color:rgba(251,247,241,.82)}
 .confianca__grid>div+div{position:relative}
-.confianca__grid>div+div::before{content:""; position:absolute; left:-12px; top:12%; height:76%; width:1px; background:rgba(227,201,130,.22)}
+.confianca__grid>div+div::before{content:""; position:absolute; left:-12px; top:12%; height:76%; width:1px; background:rgba(251,247,241,.14)}
 
 /* ---- Selos & marcas (faixa de confiança fina) ---- */
-.selos{background:var(--osso); border-top:1px solid var(--linha-ouro); border-bottom:1px solid var(--linha-ouro)}
+.selos{background:var(--osso); border-top:1px solid var(--linha); border-bottom:1px solid var(--linha)}
 .selos__inner{display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:clamp(16px,3.4vw,42px); padding:20px 0}
 .selos__rot{font-size:.7rem; text-transform:uppercase; letter-spacing:.22em; font-weight:600; color:var(--ouro-escuro)}
 .selos__lista{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:clamp(14px,2.6vw,32px)}
@@ -137,22 +129,21 @@ body.webgl-ok .hero__fallback{display:none}
 .sec__title{font-size:clamp(2rem,4.4vw,3.2rem); margin:.18em 0 .45em}
 .sec__intro{color:var(--cafe-suave); font-size:1.14rem; line-height:1.6; max-width:58ch; margin:0}
 .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:22px}
-.card{position:relative; overflow:hidden; background:var(--osso); border:1px solid var(--linha); border-radius:var(--r); padding:32px 28px; transition:transform var(--t), box-shadow var(--t), border-color var(--t)}
-.card::before{content:""; position:absolute; left:0; top:0; height:3px; width:0; background:linear-gradient(90deg,var(--ouro-claro),var(--ouro)); transition:width var(--t)}
-.card:hover{transform:translateY(-6px); box-shadow:var(--sombra); border-color:rgba(200,162,76,.45)}
-.card:hover::before{width:100%}
+.card{position:relative; overflow:hidden; background:var(--osso); border:1px solid var(--linha); border-radius:var(--r); padding:32px 28px; transition:transform var(--t), border-color var(--t), background var(--t)}
+/* card::before gold bar: removido */
+.card:hover{transform:translateY(-2px); border-color:rgba(200,162,76,.30); background:var(--branco)}
 .card__ic{display:inline-grid; place-items:center; width:54px; height:54px; border-radius:14px; background:linear-gradient(140deg,var(--nude),#EFE0D2); color:var(--ouro-escuro); margin-bottom:18px}
 .card__ic svg{width:28px; height:28px}
 .card h3{font-size:1.4rem; margin:0 0 .35em}
 .card p{margin:0; color:var(--cafe-suave); font-size:1.02rem; line-height:1.65}
-.procedimentos::before{content:""; position:absolute; right:-8%; top:8%; width:46vw; height:46vw; max-width:640px; max-height:640px; background:radial-gradient(circle, rgba(227,201,130,.20), transparent 62%); pointer-events:none; z-index:0}
+.procedimentos::before{content:""; position:absolute; right:-8%; top:8%; width:46vw; height:46vw; max-width:640px; max-height:640px; background:radial-gradient(circle, rgba(227,201,130,.07), transparent 62%); pointer-events:none; z-index:0}
 .procedimentos .wrap{position:relative; z-index:1}
 @media (max-width:880px){ .cards{grid-template-columns:repeat(2,1fr)} }
 @media (max-width:560px){ .cards{grid-template-columns:1fr} }
 
 /* ---- Antes & Depois ---- */
 .resultados{background:var(--osso)}
-.ba{position:relative; border-radius:var(--r); overflow:hidden; box-shadow:var(--sombra); aspect-ratio:16/10; touch-action:none; user-select:none; cursor:ew-resize}
+.ba{position:relative; border-radius:var(--r); overflow:hidden; box-shadow:var(--sombra-sm); aspect-ratio:16/10; touch-action:none; user-select:none; cursor:ew-resize}
 .ba__img{position:absolute; inset:0}
 .ba__img img{width:100%; height:100%; object-fit:cover; display:block}
 .ba__antes{clip-path:inset(0 calc(100% - var(--pos)) 0 0)}
@@ -195,7 +186,7 @@ body.webgl-ok .hero__fallback{display:none}
 .ambiente__grid{display:grid; grid-template-columns:1.3fr 1fr; grid-auto-rows:1fr; gap:18px}
 .amb__tile{position:relative; border-radius:var(--r); overflow:hidden; min-height:236px; background:linear-gradient(150deg,var(--nude),#EFE0D2 58%,var(--osso)); border:1px solid var(--linha); display:grid; place-content:center; text-align:center; padding:26px}
 .amb__tile--lg{grid-row:span 2}
-.amb__tile::after{content:""; position:absolute; inset:11px; border:1px solid var(--linha-ouro); border-radius:calc(var(--r) - 9px); pointer-events:none}
+/* amb__tile::after gold inner frame: removido */
 .amb__ph{display:flex; flex-direction:column; align-items:center; gap:12px; color:var(--ouro-escuro)}
 .amb__ph svg{width:44px; height:44px; opacity:.6}
 .amb__ph span{font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--cafe-suave); line-height:1.55; max-width:24ch}
@@ -233,8 +224,7 @@ body.webgl-ok .hero__fallback{display:none}
 .insta__grid{display:grid; grid-template-columns:repeat(6,1fr); gap:12px}
 .insta__tile{position:relative; aspect-ratio:1; border-radius:var(--r-sm); overflow:hidden; background:linear-gradient(150deg,var(--nude),#EAD9CB); border:1px solid var(--linha); display:grid; place-content:center; color:var(--ouro-escuro)}
 .insta__tile svg{width:26px; height:26px; opacity:.5; transition:transform var(--t), opacity var(--t)}
-.insta__tile::after{content:""; position:absolute; inset:0; background:linear-gradient(160deg, rgba(227,201,130,0), rgba(200,162,76,.20)); opacity:0; transition:opacity var(--t)}
-.insta__tile:hover::after{opacity:1}
+/* insta__tile::after gold overlay: removido — hover leve via svg scale */
 .insta__tile:hover svg{transform:scale(1.14); opacity:.85}
 .insta__cta{margin-top:20px}
 @media(max-width:900px){ .insta__grid{grid-template-columns:repeat(3,1fr)} }
@@ -253,25 +243,22 @@ body.webgl-ok .hero__fallback{display:none}
 
 /* ---- Contato ---- */
 .contato{position:relative; overflow:hidden}
-.contato::before{content:""; position:absolute; right:-10%; top:-12%; width:46vw; height:46vw; max-width:600px; max-height:600px; background:radial-gradient(circle, rgba(227,201,130,.18), transparent 62%); pointer-events:none}
+/* contato::before gold blob: removido */
 .contato .wrap{position:relative; z-index:1}
 .contato__grid{display:grid; grid-template-columns:1.05fr .95fr; gap:clamp(28px,5vw,56px); align-items:center}
 .contato__lede{color:var(--cafe-suave); font-size:1.12rem; line-height:1.7; margin:.2em 0 1.6em; max-width:46ch}
 .contato__info{list-style:none; padding:0; margin:1.8em 0 0; display:grid; gap:14px}
 .contato__info li{display:flex; align-items:center; gap:12px; color:var(--cafe); font-size:.98rem}
 .contato__info svg{width:20px; height:20px; color:var(--ouro-escuro); flex:none}
-.contato__mapa{border-radius:var(--r); overflow:hidden; box-shadow:var(--sombra); border:1px solid var(--linha)}
+.contato__mapa{border-radius:var(--r); overflow:hidden; box-shadow:var(--sombra-sm); border:1px solid var(--linha)}
 .mapa{display:block; width:100%; height:auto}
 
-/* ---- Glow contínuo (acentos) ---- */
+/* ---- Glow blobs: especialista/ambiente/insta removidos (ouro só como toque preciso) ---- */
 .especialista{position:relative; overflow:hidden}
-.especialista::before{content:""; position:absolute; left:-12%; bottom:-12%; width:42vw; height:42vw; max-width:560px; max-height:560px; background:radial-gradient(circle, rgba(227,201,130,.15), transparent 62%); pointer-events:none}
 .especialista .wrap{position:relative; z-index:1}
 .ambiente{position:relative; overflow:hidden}
-.ambiente::before{content:""; position:absolute; right:-12%; top:-10%; width:42vw; height:42vw; max-width:560px; max-height:560px; background:radial-gradient(circle, rgba(227,201,130,.16), transparent 62%); pointer-events:none}
 .ambiente .wrap{position:relative; z-index:1}
 .insta{position:relative; overflow:hidden}
-.insta::before{content:""; position:absolute; left:-12%; bottom:-12%; width:44vw; height:44vw; max-width:580px; max-height:580px; background:radial-gradient(circle, rgba(227,201,130,.15), transparent 62%); pointer-events:none}
 .insta .wrap{position:relative; z-index:1}
 
 @media (max-width:880px){
