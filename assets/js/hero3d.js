@@ -100,11 +100,15 @@ function updateRig() {
   if (innerWidth > 880) {
     ctx.rig.position.x = 1.1;
     ctx.rig.position.y = 0;
+    ctx.rig.rotation.y = 0;
     ctx.group.scale.setScalar(1.0);
+    ctx.swayAmp = 0.45;
   } else {
     ctx.rig.position.x = 0;
-    ctx.rig.position.y = -1.05;
-    ctx.group.scale.setScalar(0.9);
+    ctx.rig.position.y = -1.2;
+    ctx.rig.rotation.y = 0.52;   // mobile: encara o observador (busto centralizado)
+    ctx.group.scale.setScalar(0.8);
+    ctx.swayAmp = 0.2;           // sway menor no mobile p/ o rosto ficar frontal
   }
 }
 
@@ -194,7 +198,7 @@ function startScene(mount, { reduced }) {
     }
     by.needsUpdate = true;
     ctx.group.rotation.x += (ctx.tilt.x - ctx.group.rotation.x) * 0.05;
-    ctx.group.rotation.y = SWAY_BASE + Math.sin(now * SWAY_SPD) * SWAY_AMP; // sway — face sempre visível
+    ctx.group.rotation.y = SWAY_BASE + Math.sin(now * SWAY_SPD) * (ctx.swayAmp ?? SWAY_AMP); // sway — face sempre visível
     ctx.camera.position.x += ((ctx.tilt.y * 1.2) - ctx.camera.position.x) * 0.05;
     ctx.camera.lookAt(0, 0.1, 0);
     ctx.renderer.render(ctx.scene, ctx.camera);
