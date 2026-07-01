@@ -1,0 +1,13 @@
+# Netlify — Áurea é um site estático com o index.html na raiz do repositório.
+# Nenhum build necessário: é só publicar a pasta como está.
+[build]
+  publish = "."
+  command = ""
+
+# HTML sempre revalida (atualização aparece na hora); os assets seguem o ETag do Netlify.
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
