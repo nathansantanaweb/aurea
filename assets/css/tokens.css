@@ -1,39 +1,34 @@
 /* =====================================================================
-   ÁUREA — TOKENS  (Nude & Ouro)
+   ÁUREA — TOKENS  (Nude & Ouro · versão quente/aconchegante)
    Único lugar pra mexer em cor, tipo e medidas globais.
+   Fontes (Google Fonts, linkadas no index): Gloock (display) + Hanken Grotesk (texto).
    ===================================================================== */
-@font-face{font-family:"Cormorant Garamond";font-style:normal;font-weight:600;font-display:swap;src:url("../fonts/cormorant-600.woff2") format("woff2")}
-@font-face{font-family:"Cormorant Garamond";font-style:italic;font-weight:600;font-display:swap;src:url("../fonts/cormorant-600-italic.woff2") format("woff2")}
-@font-face{font-family:"Cormorant Garamond";font-style:normal;font-weight:500;font-display:swap;src:url("../fonts/cormorant-500.woff2") format("woff2")}
-
 :root{
-  /* ---- Cor ---- */
-  --champagne:#F6EFE7;   /* fundo base            */
-  --osso:#FBF7F1;        /* fundo alternado/cards */
-  --nude:#E6D2C5;        /* blocos de destaque    */
-  --nude-fundo:#D8BCA8;  /* sombreamento nude     */
-  --ouro:#C8A24C;        /* detalhes / CTA        */
-  --ouro-claro:#E3C982;  /* brilho / glow         */
-  --ouro-escuro:#A07C34; /* hover / contornos     */
-  --cafe:#2B221C;        /* texto                 */
-  --cafe-suave:#574C42;  /* texto secundário (escurecido p/ legibilidade) */
-  --linha:rgba(43,34,28,.12);
-  --linha-ouro:rgba(200,162,76,.34); /* fios dourados finos */
-  --branco:#FFFDFA;
-  --cafe-fundo:#241C16;  /* beats escuros editoriais — mesmo tom do topo do hero */
-  --areia:#ECDBC7;       /* faixa quente p/ dar ritmo entre as seções creme */
+  /* ---- Cor: nude & ouro, mais quente ---- */
+  --areia:#F3E8DA;        /* fundo base quente             */
+  --creme:#FBF5EC;        /* fundo alternado / cards       */
+  --nude:#EAD7C6;         /* blocos nude de destaque       */
+  --nude-fundo:#DCC0AA;   /* sombreamento nude             */
+  --terra:#B9795A;        /* toque terroso (detalhe raro)  */
+  --ouro:#C69A4C;         /* acento / CTA                  */
+  --ouro-claro:#E6C983;   /* brilho / glow                 */
+  --ouro-escuro:#9A7130;  /* hover / contornos / rótulos   */
+  --cafe:#2A211B;         /* texto                         */
+  --cafe-suave:#5C4E42;   /* texto secundário (legível)    */
+  --cafe-fundo:#221913;   /* beats escuros (seções café)   */
+  --linha:rgba(42,33,27,.12);
+  --linha-ouro:rgba(198,154,76,.36);
+  --branco:#FFFCF7;
 
-  /* ---- Tipografia ----
-     Cormorant Garamond entra vendorizada (woff2 local) no polish;
-     enquanto isso cai elegante em Georgia. Sem @font-face = sem request. */
-  --fonte-display:"Cormorant Garamond", Georgia, "Times New Roman", serif;
-  --fonte-texto:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* ---- Tipografia ---- */
+  --fonte-display:"Gloock", Georgia, "Times New Roman", serif;
+  --fonte-texto:"Hanken Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
   /* ---- Medidas ---- */
   --max:1180px;
-  --r:18px;
-  --r-sm:12px;
-  --sombra:0 22px 60px -26px rgba(43,34,28,.34);
-  --sombra-sm:0 10px 26px -16px rgba(43,34,28,.30);
+  --r:20px;
+  --r-sm:14px;
+  --sombra:0 24px 64px -28px rgba(42,33,27,.42);
+  --sombra-sm:0 12px 30px -18px rgba(42,33,27,.32);
   --t:.5s cubic-bezier(.2,.7,.2,1);
 }
