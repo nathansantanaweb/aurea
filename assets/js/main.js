@@ -37,6 +37,7 @@
     entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('is-in'); io.unobserve(en.target); } });
   }, {threshold:.16}) : null;
   document.querySelectorAll('.reveal').forEach(function(el){ io ? io.observe(el) : el.classList.add('is-in'); });
+  window.__aureaRevealReady = true;  /* avisa o failsafe do <head> que o reveal está no ar */
 
   /* Contadores */
   function animateCount(el){

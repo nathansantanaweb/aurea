@@ -3,6 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* Marca JS ligado (gate do reveal) antes do paint — sem JS, o conteúdo aparece normal. */
+  document.documentElement.classList.add('js');
+  /* Failsafe: se o script principal não rodar, revela tudo — nunca uma página em branco. */
+  addEventListener('DOMContentLoaded', function () {
+    setTimeout(function () {
+      if (window.__aureaRevealReady) return;
+      document.querySelectorAll('.reveal:not(.is-in)').forEach(function (e) { e.classList.add('is-in'); });
+    }, 2500);
+  });
+</script>
 <title>Áurea — Harmonização Facial &amp; Estética Avançada</title>
 <meta name="description" content="Áurea — harmonização facial e estética avançada. Realce sua beleza com naturalidade e resultado de especialista.">
 <meta property="og:type" content="website">
@@ -84,7 +95,7 @@
     <div class="wrap">
       <header class="sec__head reveal">
         <p class="kicker">Procedimentos</p>
-        <h2 class="sec__title">Tratamentos que realçam <em>o que já é seu</em></h2>
+        <h2 class="sec__title">Tratamentos que realçam o que já é seu</h2>
         <p class="sec__intro">Protocolos personalizados, técnica de especialista e resultado natural — pensados para o seu rosto, nunca para um padrão.</p>
       </header>
       <div class="cards">
@@ -126,7 +137,7 @@
     <div class="wrap">
       <header class="sec__head reveal">
         <p class="kicker">Resultados</p>
-        <h2 class="sec__title">Naturalidade que <em>se nota no espelho</em></h2>
+        <h2 class="sec__title">Naturalidade que se nota no espelho</h2>
         <p class="sec__intro">Arraste e sinta a diferença que a luz certa faz. Cada protocolo realça — nunca descaracteriza.</p>
       </header>
       <div class="ba reveal" id="ba" style="--pos:50%">
@@ -194,7 +205,7 @@
     <div class="wrap">
       <header class="sec__head reveal">
         <p class="kicker">Ambiente &amp; Experiência</p>
-        <h2 class="sec__title">Um refúgio pensado <em>nos detalhes</em></h2>
+        <h2 class="sec__title">Um refúgio pensado nos detalhes</h2>
         <p class="sec__intro">Da recepção ao pós-procedimento, cada detalhe acolhe: luz quente, silêncio confortável e o cuidado de quem sente que chegou ao lugar certo.</p>
       </header>
       <div class="ambiente__grid">
@@ -224,7 +235,7 @@
     <div class="wrap">
       <header class="sec__head reveal">
         <p class="kicker">Como funciona</p>
-        <h2 class="sec__title">Do primeiro oi ao <em>seu melhor reflexo</em></h2>
+        <h2 class="sec__title">Do primeiro oi ao seu melhor reflexo</h2>
       </header>
       <ol class="passos">
         <li class="reveal"><span class="passos__n">01</span><h3>Avaliação</h3><p>Uma conversa e a leitura do seu rosto pra entender desejos e possibilidades.</p></li>
@@ -239,7 +250,7 @@
     <div class="wrap">
       <header class="sec__head reveal">
         <p class="kicker">Depoimentos</p>
-        <h2 class="sec__title">Quem vive a <em>experiência Áurea</em></h2>
+        <h2 class="sec__title">Quem vive a experiência Áurea</h2>
       </header>
       <div class="deps">
         <figure class="dep reveal">
@@ -265,7 +276,7 @@
     <div class="wrap">
       <header class="sec__head reveal">
         <p class="kicker">No Instagram</p>
-        <h2 class="sec__title">Acompanhe o dia a dia <em>da Áurea</em></h2>
+        <h2 class="sec__title">Acompanhe o dia a dia da Áurea</h2>
         <a class="insta__handle" data-ig href="#">@aurea.estetica</a>
       </header>
       <div class="insta__grid">
@@ -284,7 +295,7 @@
     <div class="wrap faq__wrap">
       <header class="sec__head reveal">
         <p class="kicker">Dúvidas</p>
-        <h2 class="sec__title">Perguntas <em>frequentes</em></h2>
+        <h2 class="sec__title">Perguntas frequentes</h2>
       </header>
       <div class="faq__list reveal">
         <details class="faq__item"><summary>Dói?</summary><div class="faq__a"><p>A maioria dos procedimentos é bem tolerada, com anestésico tópico e técnica delicada. O seu conforto é prioridade em cada etapa.</p></div></details>

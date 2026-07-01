@@ -20,6 +20,8 @@
   --linha:rgba(43,34,28,.12);
   --linha-ouro:rgba(200,162,76,.34); /* fios dourados finos */
   --branco:#FFFDFA;
+  --cafe-fundo:#241C16;  /* beats escuros editoriais — mesmo tom do topo do hero */
+  --areia:#ECDBC7;       /* faixa quente p/ dar ritmo entre as seções creme */
 
   /* ---- Tipografia ----
      Cormorant Garamond entra vendorizada (woff2 local) no polish;
