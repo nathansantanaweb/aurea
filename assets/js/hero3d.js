@@ -38,6 +38,15 @@ function buildScene(mount) {
   renderer.toneMappingExposure = 1.12;
   mount.appendChild(renderer.domElement);
 
+  // Rede de segurança: se o navegador perder o contexto WebGL (memória/GPU),
+  // volta a mostrar a imagem estática em vez de uma caixa preta.
+  renderer.domElement.addEventListener('webglcontextlost', function (e) {
+    e.preventDefault();
+    if (ctx && ctx._raf) { cancelAnimationFrame(ctx._raf); ctx._raf = null; }
+    document.body.classList.remove('webgl-ok');
+    var hero = document.getElementById('topo'); if (hero) hero.classList.add('is-lit');
+  }, false);
+
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(34, mount.clientWidth/mount.clientHeight, 0.1, 100);
   camera.position.set(0, 0.15, 4.0);
@@ -228,8 +237,13 @@ function hasWebGL() {
 function init() {
   const mount = document.getElementById('hero3d');
   if (!mount) return;
-  const nogl = new URLSearchParams(location.search).get('nogl') === '1';
-  if (nogl || !hasWebGL()) {        // fallback <img> permanece visível (sem body.webgl-ok)
+  const q = new URLSearchParams(location.search);
+  const nogl = q.get('nogl') === '1';
+  const force3d = q.get('force3d') === '1';                 // ?force3d=1 força o 3D mesmo no celular (teste)
+  // Celular/touch: o WebGL pesado (mármore PBR + ambiente) trava ou renderiza preto em muitos
+  // aparelhos. Usamos a imagem estática do busto (idêntica) — hero sempre perfeito, zero bug.
+  const isTouch = matchMedia('(pointer: coarse)').matches;
+  if (nogl || !hasWebGL() || (isTouch && !force3d)) {       // fallback <img> permanece visível (sem body.webgl-ok)
     const hero = document.getElementById('topo');
     requestAnimationFrame(() => hero && hero.classList.add('is-lit')); // revela a fallback-img (remove veil)
     return;
